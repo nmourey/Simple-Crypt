@@ -1,0 +1,10 @@
+Dec. 28 2011
+	Fixed memory corruption bug. Bumped version
+	number to 1.0.  Should work reliably now.
+
+Dec. 28 2011
+	Fixed speling error in Changes file.
+
+Feb. 10 2012
+	Fixed (C) symbol so that it works with
+	all systems.

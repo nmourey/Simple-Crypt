@@ -1,0 +1,10 @@
+TODO 
+
+- Manual page.
+
+IDEAS
+
+- Process files char by char. sc currently reads the 
+  entire file into memory.
+
+
