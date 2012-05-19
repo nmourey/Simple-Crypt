@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 			if (cf->data_out_buffer)
 				munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 
+			unlink(file_out);
 			free(cf);
 			exit(1);
 
