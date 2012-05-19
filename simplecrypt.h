@@ -11,6 +11,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 
 /* for preprocessor. */
 #define MIN_PASS_LENGTH 10
@@ -18,7 +24,7 @@
 
 #define INPUT_BUFFER 132
 
-#define COPY "Simple Crypt v1.3 : Copyright (C) 2011, 2012 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
+#define COPY "Simple Crypt v2.0 : Copyright (C) 2011, 2012 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
 
 /* global variable */
 char pass_phrase[INPUT_BUFFER];
@@ -33,6 +39,7 @@ typedef struct CryptFile {
 	int remaining;
 	/* (data in size) length of data_in_buffer */
         int file_length;	
+	struct stat stat_buff;
 } CryptFile;
 
 /* get users pass phrase. */
@@ -51,56 +58,45 @@ int get_pass(void)
 }
 
 /* read a file into a buffer. */
-void read_file(CryptFile *cf, char *file_name)
+void read_file(CryptFile *cf, char *file_in, char *file_out)
 {
-	FILE *file;
+	int in_file, out_file;
 
-	file = fopen(file_name, "rb");
+	/* open input file. */
+	if ( (in_file = open(file_in, O_RDONLY)) < 0) {
+		fprintf(stderr, "Error could not open file : %s\n", file_in);
+		exit(1);
+	}
+
+	/* fill stat_buff with file info. */
+	fstat(in_file, &cf->stat_buff);
+
+	/* open output file. */
+	if  ( (out_file = open(file_out, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0644)) < 0 ){
+		fprintf(stderr, "Error could not open file : %s\n", file_out);
+		exit(1);
+	}
+
+	/* verify that the output file is writeable. */
+	lseek(out_file, cf->stat_buff.st_size-1, SEEK_SET);
+	if (write(out_file, "", 1) != 1)
+		fprintf(stderr, "Unable to write\n");
 	
-	if (!file) {
-		fprintf(stderr, "Error could not open file : %s\n", file_name);
-		exit(1);
-	}
+	cf->file_length = cf->stat_buff.st_size;
+	
+	/* mem map files.  */
+	cf->data_in_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ, MAP_SHARED, in_file, 0);
+	cf->data_out_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, out_file, 0);
 
-	/* go to end of file. */
-	fseek(file, 0, SEEK_END);
-	/* get lenght of file. */
-	cf->file_length =  ftell(file);
-	/* go back to begining of file. */
-	fseek(file, 0, SEEK_SET);
+	/* create working buffer */
+	memcpy(cf->data_out_buffer, cf->data_in_buffer, cf->stat_buff.st_size);
 
-	/* Allocate buffers */
-	/* check that memory was allocaed. */
-	if ( !(cf->data_in_buffer = malloc(cf->file_length+1)) ) {
-		fprintf(stderr, "Error could not allocate memory.\n");
-		fclose(file);
-		exit(1);
-	}
-
-	/* check that memory was allocaed. */
-	if ( !(cf->data_out_buffer = malloc(cf->file_length+1)) ) {
-		fprintf(stderr, "Error could not allocate memory.\n");
-		fclose(file);
-		exit(1);
-	}
-
-	/* read data into buffer. */
-	fread(cf->data_in_buffer, cf->file_length, 1, file);
-	fclose(file);
-}
-
-/* write a buffer out into a file.  */
-void write_file(CryptFile *cf, char *file_name)
-{
-	FILE *file;
-	if (file = fopen(file_name, "wb")){
-		fwrite(cf->data_out_buffer, cf->file_length, 1, file);
-		/* free(cf->data_out_buffer); */
-	} else {
-		fprintf(stderr, "Could not open file %s for writing.", file_name);
-		exit(1);
-	}
-	fclose(file);
+	/* unmamp input buffer */
+	munmap(cf->data_in_buffer, cf->stat_buff.st_size);
+	
+	/* close input file */
+	close(in_file);
+	close(out_file);
 }
 
 /* XOR encryption algo. */
@@ -111,14 +107,14 @@ void encrypt_data(CryptFile *cf)
 	/* process each chunk. */
 	for (i = 0; i < cf->chunk_size; i++){
 		for(j = 0; j < cf->pass_len; j++){	
-			cf->data_out_buffer[k] = cf->data_in_buffer[k] ^ cf->pass[j];
+			cf->data_out_buffer[k] = cf->data_out_buffer[k] ^ cf->pass[j];
 			k++;
 		}
 	}
 
 	/* process the remaining data. */
 	for (i = 0; i < cf->remaining; i++){
-		cf->data_out_buffer[k] = cf->data_in_buffer[k] ^ cf->pass[i];
+		cf->data_out_buffer[k] = cf->data_out_buffer[k] ^ cf->pass[i];
 		k++;
 	}
 }

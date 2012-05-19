@@ -2,9 +2,17 @@ TODO
 
 - Manual page.
 
-IDEAS
-
-- Process files char by char. sc currently reads the 
-  entire file into memory.
 
 
+- getFileSize();
+- getChunkSize();
+- getData(FILE *infile)
+
+- encData()
+- writeData()
+
+- mvTemp(tmpfile, encfile)
+
+
+
+- 

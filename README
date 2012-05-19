@@ -46,6 +46,12 @@ WARNING:
 	RAM and it worked fine but was slow.  Be sure that you have enought RAM 
 	to encode a file.
 
+	UPDATE : As of May 18 2012:
+
+		Simple-Crypt now uses mmap() for file I/O.  Has been tested with 
+	5G and 60G files on system with 4G RAM and 8G swap.  Runs slow as a file 
+	copy is needed.
+
 NOTE:
 	Simple Crypt works on both binary and text files.  Solaris 11 should
 	work fine now.  Builds on Windows with cygwin tool chain though it needs

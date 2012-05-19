@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* read file to encrypt/decrypt into memory. */
-	read_file(cf, file_in);	
+	read_file(cf, file_in, file_out);	
 
 	/* do encryption passes. */
 	do {
@@ -67,10 +67,10 @@ int main(int argc, char *argv[])
 
 			/* free memory and exit */
 			if (cf->data_in_buffer)
-				free(cf->data_in_buffer);
+				munmap(cf->data_in_buffer, cf->stat_buff.st_size);
 
 			if (cf->data_out_buffer)
-				free(cf->data_in_buffer);
+				munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 
 			free(cf);
 			exit(1);
@@ -88,16 +88,13 @@ int main(int argc, char *argv[])
 		/* encryt data */
 		encrypt_data(cf);
 
-		/* FIXME: Free memory here here before assignment? */
-		cf->data_in_buffer = cf->data_out_buffer;
-
 		num_passes++;
 	} while (num_passes < passes);
 
-	write_file(cf, file_out);
+	/* write_file(cf, file_out); */
 
 	/* free memory. */
-	free(cf->data_in_buffer);
+	munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 	free(cf);
 
 	exit(0);
