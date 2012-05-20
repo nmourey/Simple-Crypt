@@ -53,17 +53,19 @@ WARNING:
 	copy is needed.
 
 NOTE:
-	Simple Crypt works on both binary and text files.  Solaris 11 should
+	Simple Crypt works on both binary and text files.  Open Solaris 11 should
 	work fine now.  Builds on Windows with cygwin tool chain though it needs
 	testing. Cygwin can be downloaded at http://www.cygwin.com/  Ran through 
 	Valgrind and removed all but one memory leak.
+
+	Also, builds on Haiku-OS (shredder 1 42211) and Open Indiana ver. 151a4 
+	x86pc 64Bit.
 
 To Build:
 	
 	You will need a C compiler.  I recomend GCC.  On Linux or Unix you 
 	should have a C compiler installed by default.  If not check your 
 	distributions documentation on how to install it. 
-
 
 
 -------------------------------------------------------------------------------
