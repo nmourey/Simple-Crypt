@@ -65,13 +65,11 @@ int main(int argc, char *argv[])
 		/* check if password is acceptable. */
 		if (get_pass() == -1){
 
-			/* free memory and exit */
-			if (cf->data_in_buffer)
-				munmap(cf->data_in_buffer, cf->stat_buff.st_size);
-
+			/* free buffer */
 			if (cf->data_out_buffer)
 				munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 
+			/* delete output file. */
 			unlink(file_out);
 			free(cf);
 			exit(1);

@@ -2,17 +2,7 @@ TODO
 
 - Manual page.
 
-
-
-- getFileSize();
-- getChunkSize();
-- getData(FILE *infile)
-
-- encData()
-- writeData()
-
-- mvTemp(tmpfile, encfile)
-
+- Trap signals and clean up.
 
 
 - 
