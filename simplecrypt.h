@@ -56,8 +56,8 @@ int get_pass(void)
 	}
 }
 
-/* read a file into a buffer. */
-void read_file(CryptFile *cf, char *file_in, char *file_out)
+/* map input and output files */
+void map_files(CryptFile *cf, char *file_in, char *file_out)
 {
 	int in_file, out_file;
 
@@ -83,17 +83,17 @@ void read_file(CryptFile *cf, char *file_in, char *file_out)
 	
 	cf->file_length = cf->stat_buff.st_size;
 	
-	/* mem map files.  */
+	/* memory mapped I/O */
 	cf->data_in_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ, MAP_SHARED, in_file, 0);
 	cf->data_out_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, out_file, 0);
 
 	/* create working buffer */
 	memcpy(cf->data_out_buffer, cf->data_in_buffer, cf->stat_buff.st_size);
 
-	/* unmamp input buffer */
+	/* unmap input buffer */
 	munmap(cf->data_in_buffer, cf->stat_buff.st_size);
 	
-	/* close input file */
+	/* close file handles */
 	close(in_file);
 	close(out_file);
 }

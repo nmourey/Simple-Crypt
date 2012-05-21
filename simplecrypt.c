@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* read file to encrypt/decrypt into memory. */
-	read_file(cf, file_in, file_out);	
+	map_files(cf, file_in, file_out);	
 
 	/* do encryption passes. */
 	do {
