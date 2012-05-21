@@ -90,8 +90,6 @@ int main(int argc, char *argv[])
 		num_passes++;
 	} while (num_passes < passes);
 
-	/* write_file(cf, file_out); */
-
 	/* free memory. */
 	munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 	free(cf);
