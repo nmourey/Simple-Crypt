@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	/* read file to encrypt/decrypt into memory. */
+	/* open files for mem mapped I/O */
 	map_files(cf, file_in, file_out);	
 
 	/* do encryption passes. */
