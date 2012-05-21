@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 		cf->chunk_size = (cf->file_length / cf->pass_len);
 		cf->remaining = (cf->file_length % cf->pass_len);
 
-		/* encryt data */
+		/* encrypt data */
 		encrypt_data(cf);
 
 		num_passes++;
