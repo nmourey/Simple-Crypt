@@ -4,6 +4,7 @@
  * Date       : October 21st 2011
  * Program    : Simple Crypt -- Inspired by CompTIA Security+ book.
  * Copyright  : GLPv3
+ * Notice:    : set tabstop = 2
  */
 
 #include <unistd.h>
