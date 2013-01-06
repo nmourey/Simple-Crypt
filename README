@@ -1,5 +1,5 @@
 Simple Crypt a simple encryption program.
-Copyright (C) 2011, 2012 Nathan A. Mourey II <nmoureyii@ne.rr.com>
+Copyright (C) 2011, 2012, 2013 Nathan A. Mourey II <nmoureyii@ne.rr.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -15,8 +15,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -------------------------------------------------------------------------------
+This program has been simmering in my mind since 1993.  It finally got written
+in 2011. 
 
-Command Line Switches:
+Command Line Options:
 
 	-v switch shows the version.
 	-h shows the help.
@@ -41,6 +43,7 @@ To Decrypt a File:
 	you did when encrypting the plaintext.txt.
 
 WARNING:
+	(Do not encrypt yourself.)
 	At this time Simple Crypt reads the entire file that is being encrypted
 	into memory.  It has been tested with a 1G file on a computer with 4G 
 	RAM and it worked fine but was slow.  Be sure that you have enought RAM 

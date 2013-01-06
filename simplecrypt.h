@@ -24,7 +24,7 @@
 
 #define INPUT_BUFFER 132
 
-#define COPY "Simple Crypt v2.0 : Copyright (C) 2011, 2012 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
+#define COPY "Simple Crypt v2.0 : Copyright (C) 2011, 2012, 2013 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
 
 /* global variable */
 char pass_phrase[INPUT_BUFFER];

@@ -4,5 +4,8 @@ TODO
 
 - Trap signals and clean up.
 
+- rpm package.
+
+- tar.gz on humdrumcom.com
 
 - 
