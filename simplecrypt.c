@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	int opt;
 	char pass_str[32];
 	CryptFile *cf = malloc(sizeof(CryptFile));
-	
+
 	char *file_in, *file_out;
 
 	/* get commadline options. */
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 					printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 					printf("passes must be an integer.\n");
 					exit(1);
-				}			
+				}
 				break;
 			case 'd':
 				delete = 1;
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* open files for mem mapped I/O */
-	map_files(cf, file_in, file_out);	
+	map_files(cf, file_in, file_out);
 
 	/* do encryption passes. */
 	do {
@@ -79,12 +79,12 @@ int main(int argc, char *argv[])
 			free(cf);
 			exit(1);
 
-		}
+		} /* end if */
 
 		/* pass_phrase is global and is defined in the header. */
 		cf->pass_len = (strlen(pass_phrase)-1);
 		pass_phrase[cf->pass_len] = '\0';
-	
+
 		cf->pass = pass_phrase;
 		cf->chunk_size = (cf->file_length / cf->pass_len);
 		cf->remaining = (cf->file_length % cf->pass_len);
