@@ -1,7 +1,7 @@
 /* 
  * Programmer : Nathan A. Mourey II
  * Program    : SimpleCrypt
- * Date       : October 21st 2011
+ * Date       : October 21st 2011-2016
  * Program    : Simple Crypt -- Inspired by CompTIA Security+ book.
  * Copyright  : GLPv3
  * Referance  : http://www.linuxquestions.org/questions/programming-9/c-howto-read-binary-file-into-buffer-172985/
@@ -24,7 +24,7 @@
 
 #define INPUT_BUFFER 132
 
-#define COPY "Simple Crypt v2.0 : Copyright (C) 2011, 2012, 2013 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
+#define COPY "Simple Crypt v3.0 : Copyright (C) 2011-2017 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
 
 /* global variable */
 char pass_phrase[INPUT_BUFFER];
@@ -59,6 +59,7 @@ int get_pass(void)
 /* map input and output files */
 void map_files(CryptFile *cf, char *file_in, char *file_out)
 {
+	/* could be FILE type also. */
 	int in_file, out_file;
 
 	/* open input file. */

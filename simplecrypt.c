@@ -1,7 +1,7 @@
 /* 
  * Programmer : Nathan A. Mourey II
  * Program    : SimpleCrypt
- * Date       : October 21st 2011
+ * Date       : October 21st 2011-2016
  * Program    : Simple Crypt -- Inspired by CompTIA Security+ book.
  * Copyright  : GLPv3
  * Notice:    : set tabstop = 2
@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 	int chunk_size;
 	int remainder_size;
 	int passes;
+	int delete = 0;
 	int num_passes = 0;
 	int opt;
 	char pass_str[32];
@@ -26,14 +27,17 @@ int main(int argc, char *argv[])
 	char *file_in, *file_out;
 
 	/* get commadline options. */
-	while ((opt = getopt(argc, argv, "vhp:i:o:")) != -1){
+	while ((opt = getopt(argc, argv, "vhdp:i:o:")) != -1){
 		switch(opt){
 			case 'p':
 				if (!(passes = atoi(optarg))){
-					printf("Usage : %s -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+					printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 					printf("passes must be an integer.\n");
 					exit(1);
 				}			
+				break;
+			case 'd':
+				delete = 1;
 				break;
 			case 'i':
 				file_in = optarg;
@@ -42,7 +46,7 @@ int main(int argc, char *argv[])
 				file_out = optarg;
 				break;
 			case 'h':
-				printf("Usage : %s -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+				printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 				exit(1);
 				break;
 			case 'v':
@@ -54,7 +58,7 @@ int main(int argc, char *argv[])
 	}
 
 	if(!(passes && file_in && file_out) || (argc <= 1)){
-		printf("Usage : %s -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+		printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 		exit(1);
 	}
 
