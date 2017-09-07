@@ -9,6 +9,7 @@
 */
 
 #include <stdio.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -96,7 +97,7 @@ void map_files(CryptFile *cf, char *file_in, char *file_out)
   /* unmap input buffer */
   munmap(cf->data_in_buffer, cf->stat_buff.st_size);
 
-  /* NOTE: may need to unlink the original input file here. */
+  /* need to unlink the original input file here. */
   if (cf->delete_file == 1){
     unlink(file_in);
   }
