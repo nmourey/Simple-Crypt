@@ -1,7 +1,7 @@
-/* 
+/*
  * Programmer : Nathan A. Mourey II
  * Program    : SimpleCrypt
- * Date       : October 21st 2011-2016
+ * Date       : October 21st 2011-2017
  * Program    : Simple Crypt -- Inspired by CompTIA Security+ book.
  * Copyright  : GLPv3
  * Notice:    : set tabstop = 2
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	int chunk_size;
 	int remainder_size;
 	int passes;
-	int delete = 0;
+	int delete_file = 0;
 	int num_passes = 0;
 	int opt;
 	char pass_str[32];
@@ -27,17 +27,17 @@ int main(int argc, char *argv[])
 	char *file_in, *file_out;
 
 	/* get commadline options. */
-	while ((opt = getopt(argc, argv, "vhdp:i:o:")) != -1){
+	while ((opt = getopt(argc, argv, "vhrp:i:o:")) != -1){
 		switch(opt){
 			case 'p':
 				if (!(passes = atoi(optarg))){
-					printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
-					printf("passes must be an integer.\n");
+					printf("Usage : %s -r -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+					printf("Passes must be an integer.\n");
 					exit(1);
 				}
 				break;
-			case 'd':
-				delete = 1;
+			case 'r':
+				delete_file = 1;
 				break;
 			case 'i':
 				file_in = optarg;
@@ -46,9 +46,8 @@ int main(int argc, char *argv[])
 				file_out = optarg;
 				break;
 			case 'h':
-				printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+				printf("Usage : %s -r -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 				exit(1);
-				break;
 			case 'v':
 				printf("%s\n", COPY);
 				exit(1);
@@ -58,9 +57,11 @@ int main(int argc, char *argv[])
 	}
 
 	if(!(passes && file_in && file_out) || (argc <= 1)){
-		printf("Usage : %s -d -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+		printf("Usage : %s -r -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 		exit(1);
 	}
+	/* set member of cf->delete_file */
+	cf->delete_file = delete_file;
 
 	/* open files for mem mapped I/O */
 	map_files(cf, file_in, file_out);
@@ -74,9 +75,10 @@ int main(int argc, char *argv[])
 			if (cf->data_out_buffer)
 				munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 
-			/* delete output file. */
+			/* delete encrypted output file. */
 			unlink(file_out);
 			free(cf);
+			/* Exit program on bad password. */
 			exit(1);
 
 		} /* end if */
