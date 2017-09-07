@@ -41,7 +41,7 @@ typedef struct CryptFile {
   /* (data in size) length of data_in_buffer */
   int file_length;
   /* delete the unencrypted file after encryption. */
-  int delete_file;
+  short delete_file;
   struct stat stat_buff;
 } CryptFile;
 

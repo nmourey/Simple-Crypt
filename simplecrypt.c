@@ -13,6 +13,10 @@
 #include <string.h>
 #include "simplecrypt.h"
 
+/* add trap for ctl-C */
+
+
+
 int main(int argc, char *argv[])
 {
 	int chunk_size;
@@ -23,7 +27,6 @@ int main(int argc, char *argv[])
 	int opt;
 	char pass_str[32];
 	CryptFile *cf = malloc(sizeof(CryptFile));
-
 	char *file_in, *file_out;
 
 	/* get commadline options. */
