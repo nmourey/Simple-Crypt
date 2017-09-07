@@ -6,6 +6,6 @@ TODO
 
 - rpm package.
 
-- tar.gz on humdrumcom.com
+- tar.gz package on my website.
 
 - 
