@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	int chunk_size;
 	int remainder_size;
 	int passes;
-	int delete_file = 0;
+	short delete_file = 0;
 	int num_passes = 0;
 	int opt;
 	char pass_str[32];
