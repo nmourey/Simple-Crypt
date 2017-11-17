@@ -100,6 +100,10 @@ int main(int argc, char *argv[])
 		num_passes++;
 	} while (num_passes < passes);
 
+	/* need to unlink the original input file here. */
+	if (cf->delete_file == 1){
+		unlink(cf->file_in);
+	}
 	/* free memory. */
 	munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 	free(cf);

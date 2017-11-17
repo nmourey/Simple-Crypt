@@ -35,6 +35,8 @@ typedef struct CryptFile {
   char *data_in_buffer;
   char *data_out_buffer;
   char *pass;
+  /* FILE pointers. */
+  int in_file, out_file;
   int pass_len;
   int chunk_size;
   int remaining;
@@ -62,27 +64,25 @@ int get_pass(void)
 /* map input and output files */
 void map_files(CryptFile *cf, char *file_in, char *file_out)
 {
-  /* could be FILE type also. */
-  int in_file, out_file;
 
   /* open input file. */
-  if ( (in_file = open(file_in, O_RDONLY)) < 0) {
+  if ( (cf->in_file = open(file_in, O_RDONLY)) < 0) {
     fprintf(stderr, "Error could not open file : %s\n", file_in);
     exit(1);
   }
 
   /* fill stat_buff with file info. */
-  fstat(in_file, &cf->stat_buff);
+  fstat(cf->in_file, &cf->stat_buff);
 
   /* open output file. */
-  if  ( (out_file = open(file_out, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0644)) < 0 ){
-    fprintf(stderr, "Error could not open file : %s\n", file_out);
+  if  ( (cf->out_file = open(cf->file_out, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0644)) < 0 ){
+    fprintf(stderr, "Error could not open file : %s\n", cf->file_out);
     exit(1);
   }
 
   /* verify that the output file is writeable. */
-  lseek(out_file, cf->stat_buff.st_size-1, SEEK_SET);
-  if (write(out_file, "", 1) != 1)
+  lseek(cf->out_file, cf->stat_buff.st_size-1, SEEK_SET);
+  if (write(cf->out_file, "", 1) != 1)
   fprintf(stderr, "Unable to write\n");
 
   cf->file_length = cf->stat_buff.st_size;
@@ -97,13 +97,6 @@ void map_files(CryptFile *cf, char *file_in, char *file_out)
   /* unmap input buffer */
   munmap(cf->data_in_buffer, cf->stat_buff.st_size);
 
-  /* need to unlink the original input file here. */
-  if (cf->delete_file == 1){
-    unlink(file_in);
-  }
-  /* close file handles */
-  close(in_file);
-  close(out_file);
 }
 
 /* XOR encryption algo. */

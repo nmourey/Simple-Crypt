@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 This program has been simmering in my mind since 1993.  It finally got written
 in 2011 and is a gift to the community.
 
+****************** CURRENTLY BROKEN (DO NOT USE!) ************************
+
 Command Line Options:
 
 	-v switch shows the version.
@@ -44,7 +46,7 @@ To Decrypt a File:
 	you did when encrypting the plaintext.txt.
 
 WARNING:
-	(Do not encrypt yourself.)
+	(Do not encrypt yourself :^)
 	At this time Simple Crypt reads the entire file that is being encrypted
 	into memory.  It has been tested with a 1G file on a computer with 4G
 	RAM and it worked fine but was slow.  Be sure that you have enough RAM
