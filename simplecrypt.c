@@ -12,20 +12,20 @@
 #include <string.h>
 #include "simplecrypt.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+	CryptFile *cf = malloc(sizeof(CryptFile));
 	int chunk_size;
+	int remove_input_file;
 	int remainder_size;
 	int passes;
 	int num_passes = 0;
 	int opt;
 	char pass_str[32];
-	CryptFile *cf = malloc(sizeof(CryptFile));
-	
 	char *file_in, *file_out;
 
+
 	/* get commadline options. */
-	while ((opt = getopt(argc, argv, "vhp:i:o:")) != -1){
+	while ((opt = getopt(argc, argv, "vhrp:i:o:")) != -1){
 		switch(opt){
 			case 'p':
 				if (!(passes = atoi(optarg))){
@@ -34,6 +34,9 @@ int main(int argc, char *argv[])
 					exit(1);
 				}			
 				break;
+			case 'r':
+				remove_input_file = 1;
+				break;
 			case 'i':
 				file_in = optarg;
 				break;
@@ -41,7 +44,7 @@ int main(int argc, char *argv[])
 				file_out = optarg;
 				break;
 			case 'h':
-				printf("Usage : %s -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+				printf("Usage : %s -h -v [-r remove] [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 				exit(1);
 				break;
 			case 'v':
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
 	}
 
 	if(!(passes && file_in && file_out) || (argc <= 1)){
-		printf("Usage : %s -h -v [-p passes] [-i filein] [-o fileout]\n", argv[0]);
+		printf("Usage : %s -h -v [-r remove] [-p passes] [-i filein] [-o fileout]\n", argv[0]);
 		exit(1);
 	}
 
@@ -70,6 +73,7 @@ int main(int argc, char *argv[])
 				munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 
 			/* delete output file. */
+			// is unlink needed?
 			unlink(file_out);
 			free(cf);
 			exit(1);
@@ -90,9 +94,13 @@ int main(int argc, char *argv[])
 		num_passes++;
 	} while (num_passes < passes);
 
-	/* free memory. */
+	/* done with input file. unlink if requested */
+	if (remove_input_file){
+		unlink(file_in);
+	}
+
+	/* free memory & flush buffers */
 	munmap(cf->data_out_buffer, cf->stat_buff.st_size);
 	free(cf);
-
 	exit(0);
 }

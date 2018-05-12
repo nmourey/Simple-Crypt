@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -24,13 +25,14 @@
 
 #define INPUT_BUFFER 132
 
-#define COPY "Simple Crypt v2.0 : Copyright (C) 2011, 2012 Nathan A. Mourey II <nmoureyii@ne.rr.com>"
+#define COPY "Simple Crypt v2.1.0 : Copyright (C) 2011-2018 Nathan A. Mourey II <nmoureyii@gmail.com>"
 
 /* global variable */
 char pass_phrase[INPUT_BUFFER];
 
 /* data stucture for CryptFile infomation. */
 typedef struct CryptFile {
+	int in_file, out_file;
         char *data_in_buffer;
         char *data_out_buffer;
 	char *pass;
@@ -45,47 +47,47 @@ typedef struct CryptFile {
 /* get users pass phrase. */
 int get_pass(void)
 {
+	/* possible goto here? */
+	sc_repass:
 	printf("Enter encryption key [between %i and %i charaters] : ", MIN_PASS_LENGTH, MAX_PASS_LENGTH);
 	fgets(pass_phrase, sizeof(pass_phrase), stdin);
 
 	if ( ((strlen(pass_phrase)-1) <= MIN_PASS_LENGTH) || ((strlen(pass_phrase)-1) >= MAX_PASS_LENGTH) ){
-		printf("%s\n", COPY);
 		fprintf(stderr, "Error : Encryption key must be longer that %i charaters and %i charaters or less.\n", 
 		MIN_PASS_LENGTH, MAX_PASS_LENGTH);
-		return -1;
+		goto sc_repass;
 	}
 }
 
 /* map input and output files */
 void map_files(CryptFile *cf, char *file_in, char *file_out)
 {
-	int in_file, out_file;
 
 	/* open input file. */
-	if ( (in_file = open(file_in, O_RDONLY)) < 0) {
+	if ( (cf->in_file = open(file_in, O_RDONLY)) < 0) {
 		fprintf(stderr, "Error could not open file : %s\n", file_in);
 		exit(1);
 	}
 
 	/* fill stat_buff with file info. */
-	fstat(in_file, &cf->stat_buff);
+	fstat(cf->in_file, &cf->stat_buff);
 
 	/* open output file. */
-	if  ( (out_file = open(file_out, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0644)) < 0 ){
+	if  ( (cf->out_file = open(file_out, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0644)) < 0 ){
 		fprintf(stderr, "Error could not open file : %s\n", file_out);
 		exit(1);
 	}
 
 	/* verify that the output file is writeable. */
-	lseek(out_file, cf->stat_buff.st_size-1, SEEK_SET);
-	if (write(out_file, "", 1) != 1)
+	lseek(cf->out_file, cf->stat_buff.st_size-1, SEEK_SET);
+	if (write(cf->out_file, "", 1) != 1)
 		fprintf(stderr, "Unable to write\n");
 	
 	cf->file_length = cf->stat_buff.st_size;
 	
 	/* memory mapped I/O */
-	cf->data_in_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ, MAP_SHARED, in_file, 0);
-	cf->data_out_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, out_file, 0);
+	cf->data_in_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ, MAP_SHARED, cf->in_file, 0);
+	cf->data_out_buffer = mmap(0, cf->stat_buff.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, cf->out_file, 0);
 
 	/* create working buffer */
 	memcpy(cf->data_out_buffer, cf->data_in_buffer, cf->stat_buff.st_size);
@@ -94,8 +96,9 @@ void map_files(CryptFile *cf, char *file_in, char *file_out)
 	munmap(cf->data_in_buffer, cf->stat_buff.st_size);
 	
 	/* close file handles */
-	close(in_file);
-	close(out_file);
+	/* remove and close in main() */
+	close(cf->in_file);
+	close(cf->out_file);
 }
 
 /* XOR encryption algo. */

@@ -16,3 +16,5 @@ May. 18 2012
 Sept. 7 2017
 	Added removal of input file.
 
+May 12 2018
+	Fixed exit on wrong password length.

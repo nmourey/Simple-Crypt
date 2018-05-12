@@ -1,7 +1,8 @@
 all:
-	gcc -ggdb simplecrypt.c -o sc
+	gcc simplecrypt.c -o sc
+	gcc -ggdb simplecrypt.c -o sc-debug
 clean:
-	rm sc
+	rm sc sc-debug
 install:
 	cp sc ${HOME}/bin
 strip:

@@ -1,5 +1,5 @@
 Simple Crypt a simple encryption program.
-Copyright (C) 2011, 2012 Nathan A. Mourey II <nmoureyii@ne.rr.com>
+Copyright (C) 2011-2018 Nathan A. Mourey II <nmoureyii@ne.rr.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -22,8 +22,9 @@ Command Line Switches:
 	-h shows the help.
 	-p Number of times to encode the file. You will be prompted to enter a 
 	   different key on each pass.
-	-i input file
-	-o output file
+	-i input file.
+	-o output file.
+	-r removes the input file on exit.
 
 To Encrypt a File:
 	sc -p1 -i plaintext.txt -o cyphertext.txt
