@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
 	int passes;
 	int num_passes = 0;
 	int opt;
-	char pass_str[32];
 	char *file_in, *file_out;
 
 
