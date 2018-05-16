@@ -45,13 +45,21 @@ WARNING:
 	At this time Simple Crypt reads the entire file that is being encrypted
 	into memory.  It has been tested with a 1G file on a computer with 4G 
 	RAM and it worked fine but was slow.  Be sure that you have enought RAM 
-	to encode a file.
+	to encode a file. 
+
+	NOTE : Simple-Crypt is now using memory mapped I/O so file size should 
+	no longer be an issue.
 
 	UPDATE : As of May 18 2012:
 
 		Simple-Crypt now uses mmap() for file I/O.  Has been tested with 
 	5G and 60G files on system with 4G RAM and 8G swap.  Runs slow as a file 
 	copy is needed.
+
+	UPDATE : May 16th 2018
+
+		Simple-Crypt dosen't catch any signals at this time so it will
+	not exit gracefully.
 
 NOTE:
 	Simple Crypt works on both binary and text files.  Open Solaris 11 should

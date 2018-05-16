@@ -53,7 +53,7 @@ int get_pass(void)
 	fgets(pass_phrase, sizeof(pass_phrase), stdin);
 
 	if ( ((strlen(pass_phrase)-1) <= MIN_PASS_LENGTH) || ((strlen(pass_phrase)-1) >= MAX_PASS_LENGTH) ){
-		fprintf(stderr, "Error : Encryption key must be longer that %i charaters and %i charaters or less.\n", 
+		fprintf(stderr, "Error : Encryption key must be longer than %i charaters and %i charaters or less.\n", 
 		MIN_PASS_LENGTH, MAX_PASS_LENGTH);
 		goto sc_repass;
 	}
