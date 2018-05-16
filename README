@@ -47,9 +47,6 @@ WARNING:
 	RAM and it worked fine but was slow.  Be sure that you have enought RAM 
 	to encode a file. 
 
-	NOTE : Simple-Crypt is now using memory mapped I/O so file size should 
-	no longer be an issue.
-
 	UPDATE : As of May 18 2012:
 
 		Simple-Crypt now uses mmap() for file I/O.  Has been tested with 
