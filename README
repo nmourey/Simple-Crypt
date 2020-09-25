@@ -82,6 +82,8 @@ $ make
 Be sure that you have a ~/bin and it is in your $PATH
 $ make install
 
+If you don't have a ~/bin then manualy copy it into your .local/bin by hand.
+
 That's it.  Have Fun!!
 
 
