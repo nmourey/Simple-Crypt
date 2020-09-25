@@ -1,9 +1,9 @@
 /* 
  * Programmer : Nathan A. Mourey II
  * Program    : SimpleCrypt
- * Date       : October 21st 2011
+ * Date       : October 21st 2020
  * Program    : Simple Crypt -- Inspired by CompTIA Security+ book.
- * Copyright  : GLPv3
+ * Copyright  : Nathan A. Mourey II
  * Referance  : http://www.linuxquestions.org/questions/programming-9/c-howto-read-binary-file-into-buffer-172985/
  * 	      : for fseek and ftell functions.
  */
@@ -20,12 +20,14 @@
 #include <sys/mman.h>
 
 /* for preprocessor. */
-#define MIN_PASS_LENGTH 10
+#define MIN_PASS_LENGTH 5
+
+/* 1024 bits */
 #define MAX_PASS_LENGTH 128
 
-#define INPUT_BUFFER 132
+#define INPUT_BUFFER 128
 
-#define COPY "Simple Crypt v2.1.0 : Copyright (C) 2011-2018 Nathan A. Mourey II"
+#define COPY "Simple Crypt v2.1.0 : Copyright (C) 2011-2020 Nathan A. Mourey II"
 
 /* global variable */
 char pass_phrase[INPUT_BUFFER];

@@ -1,9 +1,9 @@
 /* 
  * Programmer : Nathan A. Mourey II
  * Program    : SimpleCrypt
- * Date       : October 21st 2011
+ * Date       : October 21st 2020
  * Program    : Simple Crypt -- Inspired by CompTIA Security+ book.
- * Copyright  : GLPv3
+ * Copyright  : Nathan A. Mourey II
  */
 
 #include <unistd.h>
