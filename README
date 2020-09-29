@@ -67,6 +67,10 @@ NOTE:
 	Also, builds on Haiku-OS (shredder 1 42211) and Open Indiana ver. 151a4 
 	x86pc 64Bit.
 
+NOTE:
+	Simple Crypt echos passwords when entered. If you would like to add this
+	feature please feel free to fork this project and I can pull your changes.
+
 To Build:
 	
 	You will need a C compiler.  I recomend GCC.  On Linux or Unix you 
